@@ -6,6 +6,9 @@ use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\NotificationController;
+use App\Http\Controllers\Api\V1\AnalyticsController;
+use App\Http\Controllers\Api\V1\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,15 +41,15 @@ Route::prefix('v1')->middleware('throttle:api')->group(function () {
 
         // Analytics & Reports (Rate Limited)
         Route::middleware('throttle:10,1')->group(function () {
-            Route::get('/analytics/dashboard', [\App\Http\Controllers\Api\V1\AnalyticsController::class, 'dashboard']);
-            Route::get('/analytics/sales', [\App\Http\Controllers\Api\V1\AnalyticsController::class, 'sales']);
-            Route::get('/reports/inventory', [\App\Http\Controllers\Api\V1\ReportController::class, 'inventory']);
+            Route::get('/analytics/dashboard', [AnalyticsController::class, 'dashboard']);
+            Route::get('/analytics/sales', [AnalyticsController::class, 'sales']);
+            Route::get('/reports/inventory', [ReportController::class, 'inventory']);
         });
 
         // Notifications
-        Route::get('/notifications', [\App\Http\Controllers\Api\V1\NotificationController::class, 'index']);
-        Route::get('/notifications/unread', [\App\Http\Controllers\Api\V1\NotificationController::class, 'unread']);
-        Route::post('/notifications/mark-all-read', [\App\Http\Controllers\Api\V1\NotificationController::class, 'markAllAsRead']);
-        Route::patch('/notifications/{id}/read', [\App\Http\Controllers\Api\V1\NotificationController::class, 'markAsRead']);
+        Route::get('/notifications', [NotificationControllers::class, 'index']);
+        Route::get('/notifications/unread', [NotificationController::class, 'unread']);
+        Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead']);
+        Route::patch('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
     });
 });
